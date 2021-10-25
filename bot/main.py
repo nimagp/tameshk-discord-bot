@@ -25,6 +25,8 @@ help_embed = discord.Embed(title="راهنمای دستورات بات <:logo:83
 <:logo:839559626265329704>`help,h,راهنما` : نمایش راهنما \n========
 <:logo:839559626265329704>`account` : مشاهده اطلاعات اکانت دیسکورد  \n========
 <:logo:839559626265329704>`ping` : دریافت میزان تاخیر ربات \n========
+<:logo:839559626265329704>`t2en` : ترجمه متن به انگلیسی \n========
+<:logo:839559626265329704>`t2fa` : ترجمه متن به فارسی \n========
 """, color=0xffffff)
 #create discord.py instance
 bot = commands.Bot(command_prefix="tdb.")
