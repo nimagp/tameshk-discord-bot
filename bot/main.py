@@ -189,7 +189,23 @@ async def announce(ctx,*,message):
     await ctx.reply(embed=embed)
   
 
-
+#ANCHOR send to channel command
+@bot.command()
+async def send(ctx,channel:int,*,message):
+  if not str(ctx.message.author) in admins:
+    embed=discord.Embed(title="خطا", description="شما ادمین نیستید :)", color=0xFF0000)
+    embed.set_image(url="https://s.keepmeme.com/files/en_posts/20210512/black-guy-smiles-at-camera-poker-face-meme.jpg")
+    await ctx.reply(embed=embed)
+  else:
+    try:
+      channel_id = int(channel)
+    except ValueError:
+      await ctx.message.reply('چنل آیدی باید عدد باشه') #TODO change text
+    else:
+      bot.get_channel(channel)
+      ref = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+      await ctx.message.reply('ارسال شد') #TODO change text
+      await ref.reply(message)
 
 
  
