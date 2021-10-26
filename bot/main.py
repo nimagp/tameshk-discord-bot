@@ -202,13 +202,12 @@ async def send(ctx,channel:int,*,message):
     except ValueError:
       await ctx.message.reply('چنل آیدی باید عدد باشه') #TODO change text
     else:
-      bot.get_channel(channel)
-      ref = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+      goal_channel=bot.get_channel(channel_id)
+      goal_channel.send(message)
       await ctx.message.reply('ارسال شد') #TODO change text
-      await ref.reply(message)
 
 
  
 
 alive()
-bot.run(TOKEN)
+bot.run('OTAyNDUxMjI4MzY0MTExOTE0.YXenMw.Y2fqYH-IRt3_Kg5IcwUZmsM6Yek') 
