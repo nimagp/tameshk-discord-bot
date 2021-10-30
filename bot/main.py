@@ -265,7 +265,7 @@ async def search(ctx,*,query):
     await ctx.reply(embed=embed)
     return 
   #search the query in google and send 10 results
-  results = googlesearch.search(query,stop=10)
+  results = search(query,stop=10)
   embed=discord.Embed(title="نتایج جستجو", description="", color=0x00FF00)
   embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg") 
   for result in results:
