@@ -10,6 +10,8 @@ colors=[0x1d8ddb,0x2c3157,0xd44492,0xbd3787,0x8a375,0x42ae4d,0x106939]
 import requests
 import contextlib
 import io
+import PersianSwear
+ps=PersianSwear.PersianSwear()
 #Create googletrans instance
 translator = Translator()
 #turn on a option for debug
@@ -172,10 +174,82 @@ async def announce(ctx,*,message):
     embed=discord.Embed(title="خطا", description="شما ادمین نیستید :)", color=0xFF0000)
     embed.set_image(url="https://s.keepmeme.com/files/en_posts/20210512/black-guy-smiles-at-camera-poker-face-meme.jpg")
     await ctx.reply(embed=embed)
+#a command that delete the message was command replyed to it
+@bot.command()
+async def delete(ctx):
+  if str(ctx.message.author) in admins:
+    if not ctx.message.reference:
+      await ctx.message.delete()
+      return 
+    else:
+      await ctx.message.delete()
+      ref = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+      await ref.delete()
+  else:
+    embed=discord.Embed(title="خطا", description="شما ادمین نیستید :)", color=0xFF0000)
+    embed.set_image(url="https://s.keepmeme.com/files/en_posts/20210512/black-guy-smiles-at-camera-poker-face-meme.jpg")
+    await ctx.reply(embed=embed)
+#a command that prank members with send 500 message
+bot.command()
+async def isga(ctx):
+  #get the dm of member
+  DM=ctx.message.author.dm_channel
+  #send 500 message to member
+  for i in range(500):
+    await DM.send("ایسگا کیف میده؟ =)")
+#a command for short links using zaya.io api
+@bot.command()
+async def short_url(ctx,* ,url):
+  if not url:
+    embed=discord.Embed(title="خطا", description="لینک ندادی نابغه =)", color=0xFF0000)
+    embed.set_image(url="https://cdn.thingiverse.com/assets/83/5c/96/ee/81/featured_preview_Crm4_G3uns8_1.jpg")
+    await ctx.reply(embed=embed)
+  else:
+    r = requests.get(f"https://zaya.io/api/shorten?url={url}")
+    data = r.json()
+    embed=discord.Embed(title="لینک کوتاه شد", description=f"{data['shortened_url']}", color=0x00FF00)
+    embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg")
+    await ctx.reply(embed=embed)
+#a command for update the swear words list
+@bot.command()
+async def update_swear(ctx):
+  if str(ctx.message.author) in admins:
+    ps.update()
+  else:
+    embed=discord.Embed(title="خطا", description="شما ادمین نیستید :)", color=0xFF0000)
+    embed.set_image(url="https://s.keepmeme.com/files/en_posts/20210512/black-guy-smiles-at-camera-poker-face-meme.jpg")
+    await ctx.reply(embed=embed)
+#one message event 
+@bot.event
+async def on_message(message):
+  await bot.process_commands(message)
+  mention=message.author.mention
+  if ps.has_swear(str(message.content).replace("|","")) and not message.author == bot.user and not message.guild.id == 839208499912507469:
+    filtered_message=ps.filter_words(str(message.content).replace("|",""))
+    embed=discord.Embed(title="ادب مرد به از دولت اوست...",description=f"پیام از طرف {mention}\n{filtered_message}")
+    embed.set_footer(text="لطفا مودب باشید\nاگه فکر می کنید اینکه بات یه کلمه رکیک تو مسیج شما تشخیص داده یه باگه یا لازم نیست این کلمه به عنوان یه کلمه رکیک تشخیص داده بشه یه تیکت باز کنید و به ادمین ها اطلاع بدید")
+    embed.set_image(url="https://c.tenor.com/y6lfLkr_aOQAAAAM/justin-timberlake-smh.gif")
+    await message.delete()
+    await message.channel.send(embed=embed
+    )
+    channel=bot.get_channel(855075598812184577)
+    await channel.send(f"ye band khodaee fosh dad\nin mantioneshe:{mention}\nin ham message:\n{message.content}")
+
+
+
+  elif message.content == "sghl":
+    await message.reply("منظورت سلام بود؟")
+  elif message.content == "سلام" and message.author != bot.user:
+    hellos = (f"و علیکم السلام بر {message.author.mention} عزیز!:wave:",
+             f"و علیکم السلام!👋حالت چطوره؟",
+              f"سلام علیکم")
+    response = random.choice(hellos)
+    await message.reply(response)
+  elif message.content == "خداحافظ" or message.content == "خدانگهدار":
+    byes=['خدانگهدار👋👋','خداحافظظظظ👋👋👋','به امید دیدار☺😉','خوش حال شدم از دیدنت، خدانگهدار','خداحافظ']
+    bye = random.choice(byes)
+    await message.reply(bye)
   
-
-
-
 
  
 
