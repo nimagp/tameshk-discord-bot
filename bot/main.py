@@ -13,6 +13,7 @@ import contextlib
 import io
 import PersianSwear
 from pathlib import Path
+from bs4 import BeautifulSoup
 #a simple comment to commit changes
 ps=PersianSwear.PersianSwear()
 #Create googletrans instance
@@ -30,6 +31,9 @@ help_embed = discord.Embed(title="راهنمای دستورات بات <:logo:83
 <:logo:839559626265329704>`ping` : دریافت میزان تاخیر ربات \n========
 <:logo:839559626265329704>`t2en` : ترجمه متن به انگلیسی \n========
 <:logo:839559626265329704>`t2fa` : ترجمه متن به فارسی \n========
+<:logo:839559626265329704>`short_url` : کوتاه کردن لینک \n========
+<:logo:839559626265329704>`isga` : *بدون شرح* \n========
+<:logo:839559626265329704>`search` : جستجو در گوگل \n========
 """, color=0xffffff)
 #create discord.py instance
 bot = commands.Bot(command_prefix="tdb.")
@@ -252,7 +256,26 @@ async def update_swear(ctx):
     embed=discord.Embed(title="خطا", description="شما ادمین نیستید :)", color=0xFF0000)
     embed.set_image(url="https://s.keepmeme.com/files/en_posts/20210512/black-guy-smiles-at-camera-poker-face-meme.jpg")
     await ctx.reply(embed=embed)
-#one message event 
+#a comand for search in google
+@bot.command()
+async def search(ctx,*,query):
+  if not query:
+    embed=discord.Embed(title="خطا", description="کوئری نمیدی؟ :|", color=0xFF0000)
+    embed.set_image(url="https://cdn.thingiverse.com/assets/83/5c/96/ee/81/featured_preview_Crm4_G3uns8_1.jpg")
+    await ctx.reply(embed=embed)
+    return 
+  #search the query in google and send 10 results
+  r = requests.get(f"https://www.google.com/search?q={query}&num=10")
+  soup = BeautifulSoup(r.text, 'html.parser')
+  results = soup.find_all('div', class_='r')
+  embed=discord.Embed(title="نتایج جستجو", description="", color=0x00FF00)
+  embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg")
+  for result in results:
+    embed.add_field(name=result.find('a').text, value=result.find('a')['href'], inline=False)
+  await ctx.reply(embed=embed)
+
+  
+#on message event 
 @bot.event
 async def on_message(message):
   await bot.process_commands(message)
