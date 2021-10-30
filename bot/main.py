@@ -264,8 +264,8 @@ async def search(ctx,*,query):
     embed.set_image(url="https://cdn.thingiverse.com/assets/83/5c/96/ee/81/featured_preview_Crm4_G3uns8_1.jpg")
     await ctx.reply(embed=embed)
     return 
-  #search the query in google and send 10 results
-  results = search(query,stop=10)
+  #search the query in google and send only 10 results
+  results = search(query,stop=10,num=10)
   embed=discord.Embed(title="نتایج جستجو", description="", color=0x00FF00)
   embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg") 
   for result in results:
