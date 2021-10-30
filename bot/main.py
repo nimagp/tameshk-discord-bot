@@ -13,7 +13,7 @@ import contextlib
 import io
 import PersianSwear
 from pathlib import Path
-import google
+from googlesearch import search
 #a simple comment to commit changes
 ps=PersianSwear.PersianSwear()
 #Create googletrans instance
@@ -264,15 +264,14 @@ async def search(ctx,*,query):
     embed.set_image(url="https://cdn.thingiverse.com/assets/83/5c/96/ee/81/featured_preview_Crm4_G3uns8_1.jpg")
     await ctx.reply(embed=embed)
     return 
-  #search the query in google and send 10 results using google module
-  search_results = google.search(query, num=10)
-  #create embed for send the results
+  #search the query in google and send 10 results
+  results = googlesearch.search(query,stop=10)
   embed=discord.Embed(title="نتایج جستجو", description="", color=0x00FF00)
-  embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg")
-  #send the results
-  for result in search_results:
-    embed.add_field(name=result.name, value=result.link, inline=False)
+  embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg") 
+  for result in results:
+    embed.add_field(name=result, value=result, inline=False)
   await ctx.reply(embed=embed)
+
 
   
 #ANCHOR send to channel command
