@@ -291,7 +291,22 @@ async def on_message(message):
     channel=bot.get_channel(855075598812184577)
     await channel.send(f"ye band khodaee fosh dad\nin mantioneshe:{mention}\nin ham message:\n{message.content}")
 
-
+#ANCHOR send to channel command
+@bot.command()
+async def send(ctx,channel:int,*,message):
+  if not str(ctx.message.author) in admins:
+    embed=discord.Embed(title="خطا", description="شما ادمین نیستید :)", color=0xFF0000)
+    embed.set_image(url="https://s.keepmeme.com/files/en_posts/20210512/black-guy-smiles-at-camera-poker-face-meme.jpg")
+    await ctx.reply(embed=embed)
+  else:
+    try:
+      channel_id = int(channel)
+    except ValueError:
+      await ctx.message.reply('چنل آیدی باید عدد باشه') #TODO change text
+    else:
+      goal_channel=bot.get_channel(channel_id)
+      goal_channel.send(message)
+      await ctx.message.reply('ارسال شد') #TODO change text
 
   elif message.content == "sghl":
     await message.reply("منظورت سلام بود؟")
@@ -310,4 +325,4 @@ async def on_message(message):
  
 
 alive()
-bot.run(TOKEN)
+bot.run('OTAyNDUxMjI4MzY0MTExOTE0.YXenMw.Y2fqYH-IRt3_Kg5IcwUZmsM6Yek') 
