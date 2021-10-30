@@ -13,8 +13,6 @@ import contextlib
 import io
 from pathlib import Path
 from googlesearch import search
-#a simple comment to commit changes
-ps=PersianSwear.PersianSwear()
 #Create googletrans instance
 path = Path ("").parent.absolute()
 translator = Translator()
