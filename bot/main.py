@@ -13,7 +13,7 @@ import contextlib
 import io
 import PersianSwear
 from pathlib import Path
-from google import google
+import google
 #a simple comment to commit changes
 ps=PersianSwear.PersianSwear()
 #Create googletrans instance
