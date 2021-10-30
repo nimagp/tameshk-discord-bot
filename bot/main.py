@@ -13,6 +13,7 @@ import contextlib
 import io
 import PersianSwear
 from pathlib import Path
+#a simple comment to commit changes
 ps=PersianSwear.PersianSwear()
 #Create googletrans instance
 path = Path ("").parent.absolute()
