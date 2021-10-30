@@ -1,5 +1,6 @@
 import discord
 import os
+from discord.message import Attachment
 from khayyam import JalaliDatetime
 from live import alive
 from discord.ext import commands
@@ -11,8 +12,10 @@ import requests
 import contextlib
 import io
 import PersianSwear
+from pathlib import Path
 ps=PersianSwear.PersianSwear()
 #Create googletrans instance
+path = Path ("").parent.absolute()
 translator = Translator()
 #turn on a option for debug
 translator.raise_Exception = True
@@ -24,6 +27,8 @@ help_embed = discord.Embed(title="راهنمای دستورات بات <:logo:83
 <:logo:839559626265329704>`help,h,راهنما` : نمایش راهنما \n========
 <:logo:839559626265329704>`account` : مشاهده اطلاعات اکانت دیسکورد  \n========
 <:logo:839559626265329704>`ping` : دریافت میزان تاخیر ربات \n========
+<:logo:839559626265329704>`t2en` : ترجمه متن به انگلیسی \n========
+<:logo:839559626265329704>`t2fa` : ترجمه متن به فارسی \n========
 """, color=0xffffff)
 #create discord.py instance
 bot = commands.Bot(command_prefix="tdb.")
@@ -154,21 +159,48 @@ async def send(ctx,*,message):
     embed=discord.Embed(title="خطا", description="شما ادمین نیستید :)", color=0xFF0000)
     embed.set_image(url="https://s.keepmeme.com/files/en_posts/20210512/black-guy-smiles-at-camera-poker-face-meme.jpg")
     await ctx.reply(embed=embed)
-  if not ctx.message.reference:
-    await ctx.message.delete()
-    await ctx.send(message)
+  #check if message has attachments
+  if ctx.message.attachments:
+    if not ctx.message.reference:
+      attachment = ctx.message.attachments[0]
+      await attachment.save(f'{path}/{attachment.filename}')
+      with open(f'{path}/{attachment.filename}','rb') as file:
+        await ctx.send(message,file=discord.File(file))
+        os.remove(f'{path}/{attachment.filename}')
+      await ctx.message.delete()
+    else:
+      ref = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+      attachment = ctx.message.attachments[0]
+      await attachment.save(f'{path}/{attachment.filename}')
+      with open(f'{path}/{attachment.filename}','rb') as file:
+        await ref.reply(message,file=discord.File(file))
+        os.remove(f'{path}/{attachment.filename}')
+      await ctx.message.delete()
   else:
-    await ctx.message.delete()
-    ref = await ctx.channel.fetch_message(ctx.message.reference.message_id)
-    await ref.reply(message)
+    if not ctx.message.reference:
+      await ctx.message.delete()
+      await ctx.send(message)
+    else:
+      await ctx.message.delete()
+      ref = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+      await ref.reply(message)
 
 
 #ANCHOR announce command
 @bot.command()
 async def announce(ctx,*,message):
   if str(ctx.message.author) in admins:
-    announce_channel = bot.get_channel(873598064881975396)
-    await announce_channel.send((message+"\n@Tameshki-✅"))
+    if len(ctx.message.attachments)==0:
+      announce_channel = bot.get_channel(871708836153679892)
+      await announce_channel.send(message)
+      await ctx.reply("پیام به چنل انانسمنت سرور کامیونیتی ارسال شد!")
+    elif len(ctx.message.attachments)>=1:
+      announce_channel = bot.get_channel(871708836153679892)
+      attachment = ctx.message.attachments[0]
+      await attachment.save(f'{path}/{attachment.filename}')
+      with open(f'{path}/{attachment.filename}','rb') as file:
+        await announce_channel.send(message,file=discord.File(file))
+        os.remove(f'{path}/{attachment.filename}')
     await ctx.reply("پیام به چنل انانسمنت سرور کامیونیتی ارسال شد!")
   else:
     embed=discord.Embed(title="خطا", description="شما ادمین نیستید :)", color=0xFF0000)
