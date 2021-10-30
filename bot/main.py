@@ -325,4 +325,4 @@ async def on_message(message):
  
 
 alive()
-bot.run('OTAyNDUxMjI4MzY0MTExOTE0.YXenMw.Y2fqYH-IRt3_Kg5IcwUZmsM6Yek') 
+bot.run(TOKEN) 
