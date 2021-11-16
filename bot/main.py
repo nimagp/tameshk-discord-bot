@@ -241,7 +241,7 @@ async def isga(ctx):
     await DM.send("ایسگا کیف میده؟ =)")
 #a command for short links using zaya.io api
 @bot.command()
-async def short_url(ctx,* ,url=False):
+async def short_url(ctx,* ,url=None):
   if not url:
     embed=discord.Embed(title="خطا", description="لینک ندادی نابغه =)", color=0xFF0000)
     embed.set_image(url="https://cdn.thingiverse.com/assets/83/5c/96/ee/81/featured_preview_Crm4_G3uns8_1.jpg")
@@ -257,7 +257,7 @@ async def short_url(ctx,* ,url=False):
     await ctx.reply(embed=embed)
 #a comand for search in google
 @bot.command()
-async def search(ctx,*,query=False):
+async def search(ctx,*,query=None):
   if not query:
     embed=discord.Embed(title="خطا", description="کوئری نمیدی؟ :|", color=0xFF0000)
     embed.set_image(url="https://cdn.thingiverse.com/assets/83/5c/96/ee/81/featured_preview_Crm4_G3uns8_1.jpg")
