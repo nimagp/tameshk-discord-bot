@@ -251,7 +251,7 @@ async def short_url(ctx,* ,url=None):
   if not url.startswith("http"):
     url = "http://"+url
   else:
-    r = requests.get(f"https://vurl.com/api.php?url={urllib.parse.quote(url)}")
+    r = requests.get(urllib.parse.quote(f"https://vurl.com/api.php?url={urllib.parse.quote(url)}"))
     embed=discord.Embed(title="لینک کوتاه شد", description=r.text, color=0x00FF00)
     embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg")
     await ctx.reply(embed=embed)
