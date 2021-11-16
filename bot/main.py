@@ -145,6 +145,7 @@ async def run_code(ctx, *,commands=None):
       embed=discord.Embed(title="خطا",description="منو سرکار گذاشتی یا خودتو که کامند میزنی ولی دستور نمیدی؟",color=0xFF0000)
       embed.set_image(url="https://cdn.thingiverse.com/assets/83/5c/96/ee/81/featured_preview_Crm4_G3uns8_1.jpg")
       await ctx.reply(embed)
+      return
 
     str_obj = io.StringIO() #Retrieves a stream of data
     try:
@@ -250,7 +251,7 @@ async def short_url(ctx,* ,url=None):
   if not url.startswith("http"):
     url = "http://"+url
   else:
-    r = requests.post(f"https://vurl.com/api.php?url={urllib.parse.quote(url)}")
+    r = requests.get(f"https://vurl.com/api.php?url={urllib.parse.quote(url)}")
     embed=discord.Embed(title="لینک کوتاه شد", description=r.text, color=0x00FF00)
     embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg")
     await ctx.reply(embed=embed)
