@@ -250,9 +250,8 @@ async def short_url(ctx,* ,url=None):
   if not url.startswith("http"):
     url = "http://"+url
   else:
-    API_TOKEN=os.getenv("ZAYA_TOKEN")
-    r = requests.post("https://zaya.io/api/v1/links",headers={'Accept': 'application/json','Authorization': "Bearer " + API_TOKEN},data={"url":urllib.parse.quote(url)})
-    embed=discord.Embed(title="لینک کوتاه شد", description=f"{r.json['shortened_url']}", color=0x00FF00)
+    r = requests.post(f"https://vurl.com/api.php?url={urllib.parse.quote(url)}")
+    embed=discord.Embed(title="لینک کوتاه شد", description=f"{r.text", color=0x00FF00)
     embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg")
     await ctx.reply(embed=embed)
 #a comand for search in google
