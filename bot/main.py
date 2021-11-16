@@ -1,18 +1,18 @@
 import discord
 import os
-from discord.message import Attachment
 from khayyam import JalaliDatetime
 from live import alive
 from discord.ext import commands
 import random
 from discord.ext import tasks
 from googletrans import Translator
-colors=[0x1d8ddb,0x2c3157,0xd44492,0xbd3787,0x8a375,0x42ae4d,0x106939]
 import requests
 import contextlib
 import io
 from pathlib import Path
 from googlesearch import search
+from bs4 import BeautifulSoup
+import urllib
 #Create googletrans instance
 path = Path ("").parent.absolute()
 translator = Translator()
@@ -20,6 +20,7 @@ translator = Translator()
 translator.raise_Exception = True
 #insert your admins here
 admins=["SMM#9107","NGP#9847","HADI#0001","Amir14#6843"]
+colors=[0x1d8ddb,0x2c3157,0xd44492,0xbd3787,0x8a375,0x42ae4d,0x106939]
 #help text embed
 help_embed = discord.Embed(title="راهنمای دستورات بات <:logo:839559626265329704>:",description="""
 ***تمامی دستورات با ***`.tdb`*** آغاز می شوند***
@@ -49,6 +50,13 @@ def add_gold():
     random_id=random.choice(list(golds.keys()))
     txt = f'''\n\n\n> _{golds[random_id]["gold speaker"]}_\n> "_{golds[random_id]["gold"]}_"'''
     return txt
+def title_scrape(url):
+    try:
+        thepage = requests.get(url)
+        soup = BeautifulSoup(thepage, "html.parser")
+        return soup.title.text
+    except:
+        return "No title"
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user.name}({bot.user.id})")
@@ -131,7 +139,7 @@ async def t2fa(ctx,* ,text):
 
 #ANCHOR run code command
 @bot.command()
-async def run_code(ctx, *,commands=None):
+async def run_code(ctx, *,commands=False):
   if str(ctx.message.author) in admins:
     if not commands:
       embed=discord.Embed(title="خطا",description="منو سرکار گذاشتی یا خودتو که کامند میزنی ولی دستور نمیدی؟",color=0xFF0000)
@@ -233,31 +241,34 @@ async def isga(ctx):
     await DM.send("ایسگا کیف میده؟ =)")
 #a command for short links using zaya.io api
 @bot.command()
-async def short_url(ctx,* ,url):
+async def short_url(ctx,* ,url=False):
   if not url:
     embed=discord.Embed(title="خطا", description="لینک ندادی نابغه =)", color=0xFF0000)
     embed.set_image(url="https://cdn.thingiverse.com/assets/83/5c/96/ee/81/featured_preview_Crm4_G3uns8_1.jpg")
     await ctx.reply(embed=embed)
+  #check if url has protocol(like https or http)
+  if not url.startswith("http"):
+    url = "http://"+url
   else:
-    r = requests.get(f"https://zaya.io/api/shorten?url={url}")
-    data = r.json()
-    embed=discord.Embed(title="لینک کوتاه شد", description=f"{data['shortened_url']}", color=0x00FF00)
+    API_TOKEN=os.getenv("ZAYA_TOKEN")
+    r = requests.post("https://zaya.io/api/v1/links",headers={'Accept': 'application/json','Authorization': "Bearer " + API_TOKEN},data={"url":urllib.parse.quote(url)})
+    embed=discord.Embed(title="لینک کوتاه شد", description=f"{r.json['shortened_url']}", color=0x00FF00)
     embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg")
     await ctx.reply(embed=embed)
 #a comand for search in google
 @bot.command()
-async def search(ctx,*,query):
+async def search(ctx,*,query=False):
   if not query:
     embed=discord.Embed(title="خطا", description="کوئری نمیدی؟ :|", color=0xFF0000)
     embed.set_image(url="https://cdn.thingiverse.com/assets/83/5c/96/ee/81/featured_preview_Crm4_G3uns8_1.jpg")
     await ctx.reply(embed=embed)
     return 
   #search the query in google and send only 10 results
-  results = search(query,stop=10,num=10)
+  results = search(query, stop=10,num=10,pause=1)
   embed=discord.Embed(title="نتایج جستجو", description="", color=0x00FF00)
   embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg") 
   for result in results:
-    embed.add_field(name=result, value=result, inline=False)
+    embed.add_field(name=title_scrape(result), value=result, inline=False)
   await ctx.reply(embed=embed)
 
 
