@@ -255,6 +255,7 @@ async def short_url(ctx,* ,url=None):
     embed=discord.Embed(title="لینک کوتاه شد", description=r.text, color=0x00FF00)
     embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg")
     await ctx.reply(embed=embed)
+    print("test")
 #a comand for search in google
 @bot.command()
 async def search(ctx,*,query=None):
