@@ -284,7 +284,7 @@ async def send_to_channel(ctx,channel:int,*,message):
       await ctx.message.reply('چنل آیدی باید عدد باشه') #TODO change text
     else:
       goal_channel=bot.get_channel(channel_id)
-      goal_channel.send(message)
+      await goal_channel.send(message)
       await ctx.message.reply('ارسال شد') #TODO change text
 
   
