@@ -235,11 +235,9 @@ async def delete(ctx):
 #a command that prank members with send 500 message
 @bot.command()
 async def isga(ctx):
-  #get the dm of member
-  DM=ctx.message.author.dm_channel
   #send 500 message to member
   for i in range(500):
-    await DM.send("ایسگا کیف میده؟ =)")
+    await ctx.message.author.send("ایسگا کیف میده؟ =)")
 #a command for short links using zaya.io api
 @bot.command()
 async def short_url(ctx,* ,url=None):
