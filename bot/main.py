@@ -250,12 +250,10 @@ async def short_url(ctx,* ,url=None):
   #check if url has protocol(like https or http)
   if not url.startswith("http"):
     url = "http://"+url
-  print(url)
   r = requests.get(f"https://vurl.com/api.php?url={urllib.parse.quote(url)}")
   embed=discord.Embed(title="لینک کوتاه شد", description=r.text, color=0x00FF00)
   embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg")
   await ctx.reply(embed=embed)
-  print("test")
 #a comand for search in google
 @bot.command()
 async def search(ctx,*,query=None):
