@@ -139,7 +139,7 @@ async def t2fa(ctx,* ,text):
 
 #ANCHOR run code command
 @bot.command()
-async def run_code(ctx, *,commands=False):
+async def run_code(ctx, *,commands=None):
   if str(ctx.message.author) in admins:
     if not commands:
       embed=discord.Embed(title="خطا",description="منو سرکار گذاشتی یا خودتو که کامند میزنی ولی دستور نمیدی؟",color=0xFF0000)
