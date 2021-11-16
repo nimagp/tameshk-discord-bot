@@ -232,7 +232,7 @@ async def delete(ctx):
     embed.set_image(url="https://s.keepmeme.com/files/en_posts/20210512/black-guy-smiles-at-camera-poker-face-meme.jpg")
     await ctx.reply(embed=embed)
 #a command that prank members with send 500 message
-bot.command()
+@bot.command()
 async def isga(ctx):
   #get the dm of member
   DM=ctx.message.author.dm_channel
