@@ -8,7 +8,7 @@ admins=["SMM#9107","NGP#9847","HADI#0001","Amir14#6843"]
 TOKEN = os.getenv('DISCORD_TOKEN')
 bot=commands.Bot(command_prefix="tdb.")
 ps=PersianSwear.PersianSwear()
-
+bot.remove_command('help')
 
 @bot.event
 async def on_ready():
