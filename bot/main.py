@@ -10,7 +10,7 @@ import requests
 import contextlib
 import io
 from pathlib import Path
-from googlesearch import search
+from . import googlesearch
 from bs4 import BeautifulSoup
 import urllib
 #Create googletrans instance
