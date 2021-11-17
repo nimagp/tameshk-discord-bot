@@ -1,3 +1,4 @@
+import asyncio
 import discord
 import os
 from khayyam import JalaliDatetime
@@ -10,7 +11,7 @@ import requests
 import contextlib
 import io
 from pathlib import Path
-import googlesearch
+from googlesearch import search
 from bs4 import BeautifulSoup
 import urllib
 #Create googletrans instance
@@ -261,11 +262,12 @@ async def google(ctx,*,query=None):
     await ctx.reply(embed=embed)
     return 
   #search the query in google and send only 10 results
-  results = await search(query, stop=10,num=10,pause=1)
-  embed=discord.Embed(title="نتایج جستجو", description="", color=0x00FF00)
-  embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg") 
-  for result in results:
-    embed.add_field(name=title_scrape(result), value=result, inline=False)
+  async with ctx.typing():
+    results = await search(query, stop=10,num=10,pause=1)
+    embed=discord.Embed(title="نتایج جستجو", description="", color=0x00FF00)
+    embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg") 
+    for result in results:
+      embed.add_field(name=title_scrape(result), value=result, inline=False)
   await ctx.reply(embed=embed)
 
 
