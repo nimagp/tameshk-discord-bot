@@ -32,7 +32,7 @@ help_embed = discord.Embed(title="راهنمای دستورات بات <:logo:83
 <:logo:839559626265329704>`t2fa` : ترجمه متن به فارسی \n========
 <:logo:839559626265329704>`short_url` : کوتاه کردن لینک \n========
 <:logo:839559626265329704>`isga` : *بدون شرح* \n========
-<:logo:839559626265329704>`search` : جستجو در گوگل \n========
+<:logo:839559626265329704>`google` : جستجو در گوگل \n========
 """, color=0xffffff)
 #create discord.py instance
 bot = commands.Bot(command_prefix="tdb.")
