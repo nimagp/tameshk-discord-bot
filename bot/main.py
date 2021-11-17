@@ -53,7 +53,7 @@ def add_gold():
     return txt
 def title_scrape(url):
     try:
-        thepage = requests.get(url)
+        thepage = requests.get(url).text
         soup = BeautifulSoup(thepage, "html.parser")
         return soup.title.text
     except:
