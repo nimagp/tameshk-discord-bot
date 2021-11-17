@@ -240,7 +240,7 @@ async def isga(ctx):
   #send 500 message to member
   for i in range(500):
     await ctx.message.author.send("ایسگا کیف میده؟ =)")
-#a command for short links using zaya.io api
+
 @bot.command()
 async def short_url(ctx,* ,url=None):
   if not url:
