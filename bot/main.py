@@ -75,6 +75,7 @@ async def help(ctx):
 
 
 #ANCHOR bot_is_online command
+@bot.command()
 async def bot_is_online(ctx):
   if str(ctx.message.author) in admins:
     channel = bot.get_channel(870624299877277716)
