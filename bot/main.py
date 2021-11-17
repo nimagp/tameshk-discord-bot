@@ -10,7 +10,7 @@ import requests
 import contextlib
 import io
 from pathlib import Path
-from . import googlesearch
+import googlesearch
 from bs4 import BeautifulSoup
 import urllib
 #Create googletrans instance
@@ -254,7 +254,7 @@ async def short_url(ctx,* ,url=None):
   await ctx.reply(embed=embed)
 #a comand for search in google
 @bot.command()
-async def search(ctx,*,query=None):
+async def google(ctx,*,query=None):
   if not query:
     embed=discord.Embed(title="خطا", description="کوئری نمیدی؟ :|", color=0xFF0000)
     embed.set_image(url="https://cdn.thingiverse.com/assets/83/5c/96/ee/81/featured_preview_Crm4_G3uns8_1.jpg")
