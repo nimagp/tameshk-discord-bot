@@ -1,20 +1,19 @@
+import asyncio
 import discord
 import os
-from discord.message import Attachment
 from khayyam import JalaliDatetime
 from live import alive
 from discord.ext import commands
 import random
 from discord.ext import tasks
 from googletrans import Translator
-colors=[0x1d8ddb,0x2c3157,0xd44492,0xbd3787,0x8a375,0x42ae4d,0x106939]
 import requests
 import contextlib
 import io
-import PersianSwear
 from pathlib import Path
-#a simple comment to commit changes
-ps=PersianSwear.PersianSwear()
+from googlesearch import search
+from bs4 import BeautifulSoup
+import urllib
 #Create googletrans instance
 path = Path ("").parent.absolute()
 translator = Translator()
@@ -22,6 +21,7 @@ translator = Translator()
 translator.raise_Exception = True
 #insert your admins here
 admins=["SMM#9107","NGP#9847","HADI#0001","Amir14#6843"]
+colors=[0x1d8ddb,0x2c3157,0xd44492,0xbd3787,0x8a375,0x42ae4d,0x106939]
 #help text embed
 help_embed = discord.Embed(title="راهنمای دستورات بات <:logo:839559626265329704>:",description="""
 ***تمامی دستورات با ***`.tdb`*** آغاز می شوند***
@@ -30,6 +30,9 @@ help_embed = discord.Embed(title="راهنمای دستورات بات <:logo:83
 <:logo:839559626265329704>`ping` : دریافت میزان تاخیر ربات \n========
 <:logo:839559626265329704>`t2en` : ترجمه متن به انگلیسی \n========
 <:logo:839559626265329704>`t2fa` : ترجمه متن به فارسی \n========
+<:logo:839559626265329704>`short_url` : کوتاه کردن لینک \n========
+<:logo:839559626265329704>`isga` : *بدون شرح* \n========
+<:logo:839559626265329704>`search` : جستجو در گوگل \n========
 """, color=0xffffff)
 #create discord.py instance
 bot = commands.Bot(command_prefix="tdb.")
@@ -48,6 +51,13 @@ def add_gold():
     random_id=random.choice(list(golds.keys()))
     txt = f'''\n\n\n> _{golds[random_id]["gold speaker"]}_\n> "_{golds[random_id]["gold"]}_"'''
     return txt
+def title_scrape(url):
+    try:
+        thepage = requests.get(url)
+        soup = BeautifulSoup(thepage, "html.parser")
+        return soup.title.text
+    except:
+        return "No title"
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user.name}({bot.user.id})")
@@ -136,6 +146,7 @@ async def run_code(ctx, *,commands=None):
       embed=discord.Embed(title="خطا",description="منو سرکار گذاشتی یا خودتو که کامند میزنی ولی دستور نمیدی؟",color=0xFF0000)
       embed.set_image(url="https://cdn.thingiverse.com/assets/83/5c/96/ee/81/featured_preview_Crm4_G3uns8_1.jpg")
       await ctx.reply(embed)
+      return
 
     str_obj = io.StringIO() #Retrieves a stream of data
     try:
@@ -223,68 +234,63 @@ async def delete(ctx):
     embed.set_image(url="https://s.keepmeme.com/files/en_posts/20210512/black-guy-smiles-at-camera-poker-face-meme.jpg")
     await ctx.reply(embed=embed)
 #a command that prank members with send 500 message
-bot.command()
+@bot.command()
 async def isga(ctx):
-  #get the dm of member
-  DM=ctx.message.author.dm_channel
   #send 500 message to member
   for i in range(500):
-    await DM.send("ایسگا کیف میده؟ =)")
+    await ctx.message.author.send("ایسگا کیف میده؟ =)")
 #a command for short links using zaya.io api
 @bot.command()
-async def short_url(ctx,* ,url):
+async def short_url(ctx,* ,url=None):
   if not url:
     embed=discord.Embed(title="خطا", description="لینک ندادی نابغه =)", color=0xFF0000)
     embed.set_image(url="https://cdn.thingiverse.com/assets/83/5c/96/ee/81/featured_preview_Crm4_G3uns8_1.jpg")
     await ctx.reply(embed=embed)
-  else:
-    r = requests.get(f"https://zaya.io/api/shorten?url={url}")
-    data = r.json()
-    embed=discord.Embed(title="لینک کوتاه شد", description=f"{data['shortened_url']}", color=0x00FF00)
-    embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg")
-    await ctx.reply(embed=embed)
-#a command for update the swear words list
+  #check if url has protocol(like https or http)
+  if not url.startswith("http"):
+    url = "http://"+url
+  r = requests.get(f"https://vurl.com/api.php?url={urllib.parse.quote(url)}")
+  embed=discord.Embed(title="لینک کوتاه شد", description=r.text, color=0x00FF00)
+  embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg")
+  await ctx.reply(embed=embed)
+#a comand for search in google
 @bot.command()
-async def update_swear(ctx):
-  if str(ctx.message.author) in admins:
-    ps.update()
-  else:
+async def google(ctx,*,query=None):
+  if not query:
+    embed=discord.Embed(title="خطا", description="کوئری نمیدی؟ :|", color=0xFF0000)
+    embed.set_image(url="https://cdn.thingiverse.com/assets/83/5c/96/ee/81/featured_preview_Crm4_G3uns8_1.jpg")
+    await ctx.reply(embed=embed)
+    return 
+  #search the query in google and send only 10 results
+  async with ctx.typing():
+    results = search(query, stop=10,num=10,pause=1)
+    embed=discord.Embed(title="نتایج جستجو", description="", color=0x00FF00)
+    embed.set_image(url="https://media.makeameme.org/created/all-done-3e02dfe5fd.jpg") 
+    for result in results:
+      embed.add_field(name=title_scrape(result), value=result, inline=False)
+  await ctx.reply(embed=embed)
+
+
+  
+#ANCHOR send to channel command
+@bot.command()
+async def send_to_channel(ctx,channel:int,*,message):
+  if not str(ctx.message.author) in admins:
     embed=discord.Embed(title="خطا", description="شما ادمین نیستید :)", color=0xFF0000)
     embed.set_image(url="https://s.keepmeme.com/files/en_posts/20210512/black-guy-smiles-at-camera-poker-face-meme.jpg")
     await ctx.reply(embed=embed)
-#one message event 
-@bot.event
-async def on_message(message):
-  await bot.process_commands(message)
-  mention=message.author.mention
-  if ps.has_swear(str(message.content).replace("|","")) and not message.author == bot.user and not message.guild.id == 839208499912507469:
-    filtered_message=ps.filter_words(str(message.content).replace("|",""))
-    embed=discord.Embed(title="ادب مرد به از دولت اوست...",description=f"پیام از طرف {mention}\n{filtered_message}")
-    embed.set_footer(text="لطفا مودب باشید\nاگه فکر می کنید اینکه بات یه کلمه رکیک تو مسیج شما تشخیص داده یه باگه یا لازم نیست این کلمه به عنوان یه کلمه رکیک تشخیص داده بشه یه تیکت باز کنید و به ادمین ها اطلاع بدید")
-    embed.set_image(url="https://c.tenor.com/y6lfLkr_aOQAAAAM/justin-timberlake-smh.gif")
-    await message.delete()
-    await message.channel.send(embed=embed
-    )
-    channel=bot.get_channel(855075598812184577)
-    await channel.send(f"ye band khodaee fosh dad\nin mantioneshe:{mention}\nin ham message:\n{message.content}")
+  else:
+    try:
+      channel_id = int(channel)
+    except ValueError:
+      await ctx.message.reply('چنل آیدی باید عدد باشه') #TODO change text
+    else:
+      goal_channel=bot.get_channel(channel_id)
+      await goal_channel.send(message)
+      await ctx.message.reply('ارسال شد') #TODO change text
 
-
-
-  elif message.content == "sghl":
-    await message.reply("منظورت سلام بود؟")
-  elif message.content == "سلام" and message.author != bot.user:
-    hellos = (f"و علیکم السلام بر {message.author.mention} عزیز!:wave:",
-             f"و علیکم السلام!👋حالت چطوره؟",
-              f"سلام علیکم")
-    response = random.choice(hellos)
-    await message.reply(response)
-  elif message.content == "خداحافظ" or message.content == "خدانگهدار":
-    byes=['خدانگهدار👋👋','خداحافظظظظ👋👋👋','به امید دیدار☺😉','خوش حال شدم از دیدنت، خدانگهدار','خداحافظ']
-    bye = random.choice(byes)
-    await message.reply(bye)
   
 
- 
 
 alive()
-bot.run(TOKEN)
+bot.run(TOKEN) 
