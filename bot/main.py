@@ -125,7 +125,7 @@ async def youtube(ctx):
 #ANCHOR translate commands
 @bot.command()
 async def t2en(ctx,* , text):
-  aysnc with ctx.typing():
+  async with ctx.typing():
     translated_text=translator.translate(text,src='fa',dest='en').text
     msg=f'ترجمه متن مورد نظر:\n{translated_text}'
     embedd=discord.Embed(title="ترجمه شد",description=msg+add_gold(),color=random.choice(colors))
