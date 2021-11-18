@@ -1,0 +1,5 @@
+discord
+flask
+Khayyam
+googletrans
+requests
