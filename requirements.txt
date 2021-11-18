@@ -1,6 +1,6 @@
 discord
 flask
 Khayyam
-googletrans
+googletrans==4.0.0rc1
 requests
 bs4
