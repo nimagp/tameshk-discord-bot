@@ -14,6 +14,7 @@ from pathlib import Path
 from googlesearch import search
 from bs4 import BeautifulSoup
 import urllib
+#a comment
 #Create googletrans instance
 path = Path ("").parent.absolute()
 translator = Translator()
