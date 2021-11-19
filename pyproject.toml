@@ -1,16 +1,16 @@
 [tool.poetry]
 name = "repl_python3_Tameshk"
-version = "0.1.0"
+version = "2"
 description = ""
-authors = ["Hadi Azarnasab <hazard7546@gmail.com>"]
+authors = ["Hadi Azarnasab <hazard7546@gmail.com>","Nima Ghasemi Por <ngsgfa2@gmail.com>]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-flask = "^2.0.2"
-discord = "^1.7.3"
-pyautogui = "^0.9.53"
-Khayyam = "^3.0.17"
-googletrans = "^4.0.0-rc1"
+python 
+flask 
+py-cord 
+pyautogui 
+Khayyam 
+googletrans 
 
 [tool.poetry.dev-dependencies]
 
