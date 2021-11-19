@@ -1,4 +1,4 @@
-discord
+py-cord
 flask
 Khayyam
 googletrans==4.0.0rc1
