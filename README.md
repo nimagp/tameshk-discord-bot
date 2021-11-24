@@ -14,7 +14,7 @@ We used this bot for manage our server.Made by @seyedmm and @nimagp
 ```bash
 pip3 install -r requirements.txt 
 ```
-4. set your [Discord bot token](https://www.writebots.com/discord-bot-token/) using this command befor run or use [this package](https://pypi.org/project/python-dotenv/) to set token in a file(.env)
+4. set your [Discord bot token](https://www.writebots.com/discord-bot-token/) using this command before run or use [this package](https://pypi.org/project/python-dotenv/) to set token in a file(.env)
 ``` bash
 Linux and mac:
 export DISCORD_TOKEN=Your Token
