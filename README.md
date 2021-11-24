@@ -29,6 +29,7 @@ Windows:
 set "سه شنبه"=Mention of user(in bots format)
 ```
 **Some minor configurations are in the code itself, such as the channels ID and admins ID list, and you need to change them as well.**
+
 5. Run bot with this command
 ``` bash
 python3 bot/main.py
