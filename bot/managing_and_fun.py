@@ -9,6 +9,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 bot=commands.Bot(command_prefix="tdb.")
 ps=PersianSwear.PersianSwear()
 bot.remove_command('help')
+LogChannel = os.getenv("SWEAR_WORDS_CHANNEL_LOG")
 
 @bot.event
 async def on_ready():
@@ -35,7 +36,7 @@ async def on_message(message):
     await message.delete()
     await message.channel.send(embed=embed
     )
-    channel=bot.get_channel(855075598812184577)
+    channel=bot.get_channel(LogChannel)
     await channel.send(f"ye band khodaee fosh dad\nin mantioneshe:{mention}\nin ham message:\n{message.content}")
 
 
